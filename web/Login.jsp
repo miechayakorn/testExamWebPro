@@ -12,11 +12,11 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Login</h1>
-        <p style="color: red">${message}</p>
+        <h1>Login</h1><hr>
+        <p style="color: red">${message}</p><br><br>
         <form action="Login">
-            id: <input type="text" name="id" >
-            pin: <input type="text" name="pin" >
+            ID: <input type="text" name="id" ><br><br>
+            PIN: <input type="text" name="pin" ><br><br>
             <input type="submit">
         </form>
     </body>

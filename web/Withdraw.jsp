@@ -21,7 +21,7 @@
         <form>
             Withdraw <input type="text" name="withdraw" >
             <input type="submit">
-        </form>
+        </form><br><br>
         <a href="MyAccount.jsp">Back</a>
     </body>
 </html>

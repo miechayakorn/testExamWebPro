@@ -84,7 +84,7 @@ public class WithdrawServlet extends HttpServlet {
                     Logger.getLogger(DepositServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                List<History> historyList = historyJpa.findHistoryEntities();
+                /*List<History> historyList = historyJpa.findHistoryEntities();
                 List<History> historyAdd = new ArrayList<>();
 
                 for (History history1 : historyList) {
@@ -93,7 +93,7 @@ public class WithdrawServlet extends HttpServlet {
                     }
                 }
 
-                acc.setHistoryList(historyAdd);
+                acc.setHistoryList(historyAdd);*/
                 session.setAttribute("acc", acc);
                 response.sendRedirect("MyAccount.jsp");
                 return;

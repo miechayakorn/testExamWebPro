@@ -5,13 +5,22 @@
  */
 package bank.servlet;
 
+import bank.jpa.Account;
+import bank.jpa.History;
+import bank.jpa.controller.AccountJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -20,6 +29,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "HistoryServlet", urlPatterns = {"/History"})
 public class HistoryServlet extends HttpServlet {
 
+    @PersistenceUnit(unitName = "testExamWebProPU")
+    EntityManagerFactory emf;
+    
+    @Resource
+    UserTransaction utx;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,6 +45,11 @@ public class HistoryServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        AccountJpaController accJpa = new AccountJpaController(utx, emf);
+        Account acc = accJpa.findAccount(((Account)session.getAttribute("acc")).getAccountid());
+        List<History> historyList = acc.getHistoryList();
+        request.setAttribute("historyList", historyList);
         getServletContext().getRequestDispatcher("/History.jsp").forward(request, response);
     }
 

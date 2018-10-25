@@ -22,7 +22,7 @@
                 <th>Amount</th>
                 <th>Balance</th>
             </tr>
-            <c:forEach  items="${sessionScope.acc.historyList}" var="list" varStatus="vs">
+            <c:forEach  items="${historyList}" var="list" varStatus="vs">
                 <tr>
                     <th>${vs.count}</th>
                     <th>${list.time}</th>

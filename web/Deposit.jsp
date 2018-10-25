@@ -20,7 +20,7 @@
         <form>
             Deposit: <input type="text" name="deposit" >
             <input type="submit">
-        </form>
+        </form><br><br>
         <a href="MyAccount.jsp">Back</a>
     </body>
 </html>
