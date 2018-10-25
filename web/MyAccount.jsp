@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>My Account</h1><hr>
-        <p style="color: red">${message}</p>
+        <p style="color: green">${message}</p>
         
         <h2>
             Name: ${sessionScope.acc.name}<br>

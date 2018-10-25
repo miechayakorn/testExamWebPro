@@ -52,9 +52,20 @@ public class WithdrawServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String withdraw = request.getParameter("withdraw");
-
+        HttpSession session = request.getSession(false);
+        /*//Filter
+        try {
+            if (session.getAttribute("acc") == null) {
+                response.sendRedirect("Login");
+                return;
+            }
+        } catch (Exception e) {
+            response.sendRedirect("Login");
+            return;
+        }*/
+        
         if (withdraw != null && withdraw.trim().length() > 0) {
-            HttpSession session = request.getSession(false);
+            
             AccountJpaController accJpa = new AccountJpaController(utx, emf);
             Account acc = accJpa.findAccount(((Account) session.getAttribute("acc")).getAccountid());
             int balance = acc.getBalance();
@@ -83,19 +94,10 @@ public class WithdrawServlet extends HttpServlet {
                 } catch (Exception ex) {
                     Logger.getLogger(DepositServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-                /*List<History> historyList = historyJpa.findHistoryEntities();
-                List<History> historyAdd = new ArrayList<>();
-
-                for (History history1 : historyList) {
-                    if (Objects.equals(history1.getAccountid().getAccountid(), acc.getAccountid())) {
-                        historyAdd.add(history1);
-                    }
-                }
-
-                acc.setHistoryList(historyAdd);*/
+                
                 session.setAttribute("acc", acc);
-                response.sendRedirect("MyAccount.jsp");
+                request.setAttribute("message", "Withdraw Complete");
+                getServletContext().getRequestDispatcher("/MyAccount.jsp").forward(request, response);
                 return;
             }else{
                 request.setAttribute("message", "Error");

@@ -46,6 +46,17 @@ public class HistoryServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        /*//Filter
+        try {
+            if (session.getAttribute("acc") == null) {
+                response.sendRedirect("Login");
+                return;
+            }
+        } catch (Exception e) {
+            response.sendRedirect("Login");
+            return;
+        }*/
+        
         AccountJpaController accJpa = new AccountJpaController(utx, emf);
         Account acc = accJpa.findAccount(((Account)session.getAttribute("acc")).getAccountid());
         List<History> historyList = acc.getHistoryList();

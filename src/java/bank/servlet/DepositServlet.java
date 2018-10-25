@@ -51,9 +51,19 @@ public class DepositServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String deposit = request.getParameter("deposit");
-
+        HttpSession session = request.getSession(false);
+        /*//Filter
+        try {
+            if (session.getAttribute("acc") == null) {
+                response.sendRedirect("Login");
+                return;
+            }
+        } catch (Exception e) {
+            response.sendRedirect("Login");
+            return;
+        }*/
+        
         if (deposit != null && deposit.trim().length() > 0) {
-            HttpSession session = request.getSession(false);
             AccountJpaController accJpa = new AccountJpaController(utx, emf);
             
             //find AccountDB from session
@@ -71,7 +81,6 @@ public class DepositServlet extends HttpServlet {
                 } catch (Exception ex) {
                     Logger.getLogger(DepositServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
                 
                 HistoryJpaController historyJpa = new HistoryJpaController(utx, emf);
                 History history = historyJpa.findHistory(acc.getAccountid());
@@ -89,18 +98,9 @@ public class DepositServlet extends HttpServlet {
                     Logger.getLogger(DepositServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                /*//HistoryList set Session ของ Accountid
-                List<History> historyList = historyJpa.findHistoryEntities();
-                List<History> historyAdd = new ArrayList<>();
-                for (History history1 : historyList) {
-                    if (Objects.equals(history1.getAccountid().getAccountid(), acc.getAccountid())) {
-                        historyAdd.add(history1);
-                    }
-                }
-                acc.setHistoryList(historyAdd);*/
                 session.setAttribute("acc", acc);
-                
-                response.sendRedirect("MyAccount.jsp");
+                request.setAttribute("message", "Doposit Complete");
+                getServletContext().getRequestDispatcher("/MyAccount.jsp").forward(request, response);
                 return;
             }else{
                 request.setAttribute("message", "Error");
