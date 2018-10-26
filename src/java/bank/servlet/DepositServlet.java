@@ -52,7 +52,7 @@ public class DepositServlet extends HttpServlet {
             throws ServletException, IOException {
         String deposit = request.getParameter("deposit");
         HttpSession session = request.getSession(false);
-        /*//Filter
+        //Filter
         try {
             if (session.getAttribute("acc") == null) {
                 response.sendRedirect("Login");
@@ -61,7 +61,7 @@ public class DepositServlet extends HttpServlet {
         } catch (Exception e) {
             response.sendRedirect("Login");
             return;
-        }*/
+        }
         
         if (deposit != null && deposit.trim().length() > 0) {
             AccountJpaController accJpa = new AccountJpaController(utx, emf);

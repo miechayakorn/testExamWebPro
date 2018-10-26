@@ -53,7 +53,7 @@ public class WithdrawServlet extends HttpServlet {
             throws ServletException, IOException {
         String withdraw = request.getParameter("withdraw");
         HttpSession session = request.getSession(false);
-        /*//Filter
+        //Filter
         try {
             if (session.getAttribute("acc") == null) {
                 response.sendRedirect("Login");
@@ -62,7 +62,7 @@ public class WithdrawServlet extends HttpServlet {
         } catch (Exception e) {
             response.sendRedirect("Login");
             return;
-        }*/
+        }
         
         if (withdraw != null && withdraw.trim().length() > 0) {
             

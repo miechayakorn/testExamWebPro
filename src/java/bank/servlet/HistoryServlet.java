@@ -46,7 +46,7 @@ public class HistoryServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        /*//Filter
+        //Filter
         try {
             if (session.getAttribute("acc") == null) {
                 response.sendRedirect("Login");
@@ -55,11 +55,13 @@ public class HistoryServlet extends HttpServlet {
         } catch (Exception e) {
             response.sendRedirect("Login");
             return;
-        }*/
+        }
         
+        //Create AccountDB & find HistoryList
         AccountJpaController accJpa = new AccountJpaController(utx, emf);
         Account acc = accJpa.findAccount(((Account)session.getAttribute("acc")).getAccountid());
         List<History> historyList = acc.getHistoryList();
+        //Set HistoryList in Attribute
         request.setAttribute("historyList", historyList);
         getServletContext().getRequestDispatcher("/History.jsp").forward(request, response);
     }
