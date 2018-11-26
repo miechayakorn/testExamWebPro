@@ -37,9 +37,10 @@ public class WithdrawServlet extends HttpServlet {
 
     @PersistenceUnit(unitName = "testExamWebProPU")
     EntityManagerFactory emf;
-    
+
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -63,15 +64,15 @@ public class WithdrawServlet extends HttpServlet {
             response.sendRedirect("Login");
             return;
         }
-        
+
         if (withdraw != null && withdraw.trim().length() > 0) {
-            
+
             AccountJpaController accJpa = new AccountJpaController(utx, emf);
             Account acc = accJpa.findAccount(((Account) session.getAttribute("acc")).getAccountid());
             int balance = acc.getBalance();
             int withdrawInt = Integer.parseInt(withdraw);
 
-            if (withdrawInt > 0&& balance - withdrawInt >=0) {
+            if (withdrawInt > 0 && balance - withdrawInt >= 0) {
                 balance = balance - withdrawInt;
                 try {
                     acc.setBalance(balance);
@@ -81,8 +82,10 @@ public class WithdrawServlet extends HttpServlet {
                 }
 
                 HistoryJpaController historyJpa = new HistoryJpaController(utx, emf);
-                History history = historyJpa.findHistory(acc.getAccountid());
-                history.setHistoryid(history.getHistoryid() + 1);
+                int historyId = historyJpa.getHistoryCount() + 1;
+
+                History history = new History();
+                history.setHistoryid(historyId);
                 history.setAccountid(acc);
                 history.setMethod("withdraw");
                 history.setAmount(withdrawInt);
@@ -94,12 +97,12 @@ public class WithdrawServlet extends HttpServlet {
                 } catch (Exception ex) {
                     Logger.getLogger(DepositServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 session.setAttribute("acc", acc);
                 request.setAttribute("message", "Withdraw Complete");
                 getServletContext().getRequestDispatcher("/MyAccount.jsp").forward(request, response);
                 return;
-            }else{
+            } else {
                 request.setAttribute("message", "Error");
             }
 

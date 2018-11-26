@@ -62,10 +62,10 @@ public class DepositServlet extends HttpServlet {
             response.sendRedirect("Login");
             return;
         }
-        
+
         if (deposit != null && deposit.trim().length() > 0) {
             AccountJpaController accJpa = new AccountJpaController(utx, emf);
-            
+
             //find AccountDB from session
             Account acc = accJpa.findAccount(((Account) session.getAttribute("acc")).getAccountid());
             int balance = acc.getBalance();
@@ -81,10 +81,12 @@ public class DepositServlet extends HttpServlet {
                 } catch (Exception ex) {
                     Logger.getLogger(DepositServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 HistoryJpaController historyJpa = new HistoryJpaController(utx, emf);
-                History history = historyJpa.findHistory(acc.getAccountid());
-                history.setHistoryid(history.getHistoryid() + 1);
+                int historyId = historyJpa.getHistoryCount() + 1;
+
+                History history = new History();
+                history.setHistoryid(historyId);
                 history.setAccountid(acc);
                 history.setMethod("deposit");
                 history.setAmount(depositInt);
@@ -102,7 +104,7 @@ public class DepositServlet extends HttpServlet {
                 request.setAttribute("message", "Doposit Complete");
                 getServletContext().getRequestDispatcher("/MyAccount.jsp").forward(request, response);
                 return;
-            }else{
+            } else {
                 request.setAttribute("message", "Error");
             }
 
