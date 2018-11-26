@@ -53,12 +53,11 @@ public class DepositServlet extends HttpServlet {
         String deposit = request.getParameter("deposit");
         HttpSession session = request.getSession(false);
         //Filter
-        try {
-            if (session.getAttribute("acc") == null) {
-                response.sendRedirect("Login");
-                return;
-            }
-        } catch (Exception e) {
+        if (session == null) {
+            response.sendRedirect("Login");
+            return;
+        }
+        if (session.getAttribute("acc") == null) {
             response.sendRedirect("Login");
             return;
         }

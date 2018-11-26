@@ -47,12 +47,11 @@ public class HistoryServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         //Filter
-        try {
-            if (session.getAttribute("acc") == null) {
-                response.sendRedirect("Login");
-                return;
-            }
-        } catch (Exception e) {
+        if (session == null) {
+            response.sendRedirect("Login");
+            return;
+        }
+        if (session.getAttribute("acc") == null) {
             response.sendRedirect("Login");
             return;
         }
